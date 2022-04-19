@@ -1,11 +1,15 @@
 import { defineStore } from 'pinia';
 
 export const useTaskList = defineStore('Main', {
-    state: () => ({
-        list: []
-    }),
+    state: () => {
+        return {
+            list: []
+        }
+    },
     getters: {
-        getList: (state) => state.list
+        getList: (state) => {
+            return state.list
+        }
     },
     actions: {
         add(task) {

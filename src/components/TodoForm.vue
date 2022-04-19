@@ -16,14 +16,11 @@
           </template>
         </select>
       </fieldset>
-      {{ isTaskFilled }}
       <span class="container-preview">
         <b>Nome: {{ taskName }}</b>
         <span>{{ taskLabel }}</span>
       </span>
-      <button @click="handleClassLabel(taskLabel)" type="button">
-        Adicionar
-      </button>
+      <button @click="addTask()" type="button">Adicionar</button>
     </form>
   </div>
 </template>
@@ -34,19 +31,19 @@ import { useTaskList } from '../store/useTaskList';
 
 export default {
   setup() {
+    const store = useTaskList();
     const optTaskLabel = ref(['high', 'Medium', 'Low']);
-    const taskLabel = ref('');
-    const taskName = ref('');
-
-    const storeTask = useTaskList();
+    let taskLabel = ref('');
+    let taskName = ref('');
 
     const isTaskFilled = computed(() => {
       return !!(taskLabel.value.length && taskName.value.length);
     });
 
-    const handleClassLabel = (label) => {
-      console.log(label);
-      console.log(storeTask.list);
+    const addTask = () => {
+      store.add({ taskName, taskLabel });
+      taskName.value = '';
+      taskLabel.value = '';
     };
 
     return {
@@ -54,7 +51,8 @@ export default {
       optTaskLabel,
       taskLabel,
       taskName,
-      handleClassLabel,
+      addTask,
+      store,
     };
   },
 };
