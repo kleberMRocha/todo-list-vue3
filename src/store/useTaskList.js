@@ -7,13 +7,13 @@ export const useTaskList = defineStore('Main', {
         }
     },
     getters: {
-        getList: (state) => {
-            return state.list
+        getId: (state) => {
+            return state.list.length + 1;
         }
     },
     actions: {
         add(task) {
-            this.list = [...this.list, task]
+            this.list.push(task);
         }
     }
 });

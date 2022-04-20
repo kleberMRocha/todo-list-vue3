@@ -36,14 +36,27 @@ export default {
     let taskLabel = ref('');
     let taskName = ref('');
 
+    const cleanValues = () => {
+      taskLabel.value = '';
+      taskName.value = '';
+    };
+
     const isTaskFilled = computed(() => {
       return !!(taskLabel.value.length && taskName.value.length);
     });
 
     const addTask = () => {
-      store.add({ taskName, taskLabel });
-      taskName.value = '';
-      taskLabel.value = '';
+      const task = Object.assign(
+        {},
+        {
+          id: store.getId,
+          taskName: taskName.value,
+          taskLabel: taskLabel.value,
+        }
+      );
+
+      store.add(task);
+      cleanValues();
     };
 
     return {
