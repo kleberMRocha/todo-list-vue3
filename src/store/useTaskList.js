@@ -3,7 +3,10 @@ import { defineStore } from 'pinia';
 export const useTaskList = defineStore('Main', {
     state: () => {
         return {
-            list: []
+            list: [],
+            valuesToEdit: {},
+            isEdit: false
+
         }
     },
     getters: {
@@ -14,6 +17,10 @@ export const useTaskList = defineStore('Main', {
     actions: {
         add(task) {
             this.list.push(task);
+        },
+        setEdit(task) {
+            this.isEdit = true;
+            this.valuesToEdit = task;
         }
     }
 });

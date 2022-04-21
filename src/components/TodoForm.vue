@@ -20,21 +20,27 @@
         <b>Nome: {{ taskName }}</b>
         <span>{{ taskLabel }}</span>
       </span>
-      <button @click="addTask()" type="button">Adicionar</button>
+      <button :disabled="!isTaskFilled" @click="addTask()" type="button">
+        Adicionar
+      </button>
     </form>
   </div>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useTaskList } from '../store/useTaskList';
 
 export default {
   setup() {
     const store = useTaskList();
-    const optTaskLabel = ref(['high', 'Medium', 'Low']);
+    const optTaskLabel = ref(['High', 'Medium', 'Low']);
     let taskLabel = ref('');
     let taskName = ref('');
+
+    watch(taskLabel, () => {
+      console.log(taskLabel);
+    });
 
     const cleanValues = () => {
       taskLabel.value = '';

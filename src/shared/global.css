@@ -180,6 +180,11 @@ input {
   /* 1 */
   overflow: visible;
 }
+button[disabled],
+button[disabled]:hover {
+  background-color: gray;
+  cursor: not-allowed;
+}
 
 /**
  * Remove the inheritance of text transform in Edge, Firefox, and IE.
