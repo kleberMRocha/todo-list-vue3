@@ -21,6 +21,9 @@ export const useTaskList = defineStore('Main', {
         setEdit(task) {
             this.isEdit = true;
             this.valuesToEdit = task;
+        },
+        edit(task) {
+            console.log(task);
         }
     }
 });

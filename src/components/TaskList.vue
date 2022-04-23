@@ -8,8 +8,10 @@
           <span :class="handleColor(task.taskLabel)">{{ task.taskLabel }}</span>
         </P>
         <div class="task-list-actions">
-          <button @click="store.setEdit(task)">Editar</button>
-          <button>Excluir</button>
+          <button :disabled="isEdit" @click="store.setEdit(task)">
+            Editar
+          </button>
+          <button :disabled="isEdit" @click="exluir(task.id)">Excluir</button>
         </div>
       </li>
     </template>
@@ -22,7 +24,7 @@ import { storeToRefs } from 'pinia';
 export default {
   setup() {
     const store = useTaskList();
-    const { list } = storeToRefs(store);
+    const { list, isEdit } = storeToRefs(store);
 
     const handleColor = (value) => {
       const classNames = {
@@ -34,7 +36,12 @@ export default {
       return classNames[value];
     };
 
-    return { list, handleColor, store };
+    const exluir = (id) => {
+      const newList = list.value.filter((t) => t.id !== id);
+      list.value = newList;
+    };
+
+    return { list, handleColor, exluir, store, isEdit };
   },
 };
 </script>

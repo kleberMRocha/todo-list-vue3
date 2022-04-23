@@ -20,8 +20,12 @@
         <b>Nome: {{ taskName }}</b>
         <span>{{ taskLabel }}</span>
       </span>
-      <button :disabled="!isTaskFilled" @click="addTask()" type="button">
-        Adicionar
+      <button
+        :disabled="!isTaskFilled"
+        @click="isEdit ? editTask() : addTask()"
+        type="button"
+      >
+        {{ isEdit ? 'Editar' : 'Adicionar' }}
       </button>
     </form>
   </div>
@@ -30,22 +34,32 @@
 <script>
 import { ref, computed, watch } from 'vue';
 import { useTaskList } from '../store/useTaskList';
+import { storeToRefs } from 'pinia';
 
 export default {
   setup() {
     const store = useTaskList();
+    const { isEdit, valuesToEdit, list } = storeToRefs(store);
+
     const optTaskLabel = ref(['High', 'Medium', 'Low']);
     let taskLabel = ref('');
     let taskName = ref('');
-
-    watch(taskLabel, () => {
-      console.log(taskLabel);
-    });
 
     const cleanValues = () => {
       taskLabel.value = '';
       taskName.value = '';
     };
+
+    watch(isEdit, (value) => {
+      if (value) {
+        taskLabel.value = valuesToEdit.value.taskLabel;
+        taskName.value = valuesToEdit.value.taskName;
+        return;
+      }
+
+      cleanValues();
+      valuesToEdit.value = {};
+    });
 
     const isTaskFilled = computed(() => {
       return !!(taskLabel.value.length && taskName.value.length);
@@ -65,13 +79,28 @@ export default {
       cleanValues();
     };
 
+    const editTask = () => {
+      const { id } = valuesToEdit.value;
+      list.value.map((t) => {
+        if (t.id === id) {
+          t.taskName = taskName.value;
+          t.taskLabel = taskLabel.value;
+        }
+        return t;
+      });
+
+      isEdit.value = false;
+    };
+
     return {
       isTaskFilled,
       optTaskLabel,
       taskLabel,
       taskName,
       addTask,
+      editTask,
       store,
+      isEdit,
     };
   },
 };
