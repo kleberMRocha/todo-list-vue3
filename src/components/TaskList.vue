@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { onMounted } from 'vue';
 import { useTaskList } from '../store/useTaskList';
 import { storeToRefs } from 'pinia';
 export default {
@@ -38,8 +39,14 @@ export default {
 
     const exluir = (id) => {
       const newList = list.value.filter((t) => t.id !== id);
+      localStorage.setItem('@todo-vue3', JSON.stringify(newList));
       list.value = newList;
     };
+
+    onMounted(() => {
+      const taskList = localStorage.getItem('@todo-vue3');
+      list.value = JSON.parse(taskList);
+    });
 
     return { list, handleColor, exluir, store, isEdit };
   },

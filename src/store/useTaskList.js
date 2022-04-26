@@ -17,13 +17,12 @@ export const useTaskList = defineStore('Main', {
     actions: {
         add(task) {
             this.list.push(task);
+            localStorage.setItem('@todo-vue3', JSON.stringify(this.list));
         },
         setEdit(task) {
             this.isEdit = true;
             this.valuesToEdit = task;
-        },
-        edit(task) {
-            console.log(task);
+            localStorage.setItem('@todo-vue3', JSON.stringify(this.list));
         }
     }
 });
